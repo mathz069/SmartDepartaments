@@ -1,0 +1,77 @@
+<div class="container p-5" *ngIf="verTabela">
+  <div class="border boder-light rounded p-5" >
+    <div>
+      <button type="button" class="btn btn-sm btn-secondary" (click)="ExibirFormularioCadastro()">Novo(a) Funcionário(a)</button>
+    </div>
+    <hr/>
+    <table class="table table-striped table-hover table-sm" *ngIf="funcionarios">
+      <tr class="thead-light">
+        <th>Id</th>
+        <th>Nome</th>
+        <th>RG</th>
+        <th>ID do Departamento</th>
+        <th>Opções</th>
+      </tr>
+      <tr *ngFor="let funcionario of funcionarios">
+        <td> {{funcionario.id}} </td>
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.rg}}</td>
+        <td>{{ funcionario.departamentoId}}</td>
+        <td>
+          <button type="button" class="btn btn-sm btn-outline-info" (click)="ExibirFormularioAtualizacao(funcionario.id)">Atualizar</button> |
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="ExibirConfirmacaoExclusao(funcionario.id, funcionario.nome, conteudoModal)">Excluir</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="container p-5" *ngIf="verFormulario">
+  <div class="row justify-content-center my-5">
+    <div class="col-6 border border-light rounded p-5 shadow" *ngIf="formulario">
+      <h6>{{tituloFormulario}}</h6>
+      <hr/>
+      
+      <form [formGroup]="formulario" (ngSubmit)="EnviarFormulario()">
+        <div class="form-group">
+          <label>Nome:</label>
+        </div>
+        <input type="text" class="form-control form-control-sm mb-2" formControlName="nome"/>
+        <div class="form-group">
+          <label>RG:</label>
+          <input type="text" class="form-control form-control-sm mb-2" formControlName="rg"/>
+        </div>
+        <div class="form-group"> 
+          <label>Foto:</label>
+          <input type="file" class="form-control form-control-sm mb-2" 
+          (change)="inputFileChange($event)" />
+        </div>
+        <div class="form-group">
+          <label>ID do Departamento:</label>
+          <input type="text" class="form-control form-control-sm mb-2" formControlName="departamentoId"/>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-sm btn-light mx-2">Salvar</button>
+          <button type="button" class="btn btn-sm btn-light mx-2" (click)="Voltar()">Voltar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #conteudoModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirmação de Exclusão</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Prosseguir com a exclusão do(a) funcionário(a) de {{nomeFuncionario}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Não</button>
+    <button type="button" class="btn btn-light" (click)="ExcluirFuncionario(id)">Sim</button>
+  </div>
+</ng-template>
